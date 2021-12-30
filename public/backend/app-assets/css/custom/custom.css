@@ -1,0 +1,18 @@
+.user_photo_list {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid blue;
+}
+
+.post_image,
+.post_image_g,
+.post_image_v,
+.post_image_a {
+    display: none;
+}
+
+.logo_image_list {
+    width: 200px;
+    height: auto;
+}

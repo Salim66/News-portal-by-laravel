@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Logo extends Model
+{
+    use HasFactory;
+
+    protected $guarded = [];
+
+    // get language per post
+    public function languages(){
+        return $this->belongsTo(Language::class, 'language_id');
+    }
+
+}
