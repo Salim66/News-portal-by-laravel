@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FaviconContorller;
+use App\Http\Controllers\FooterController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LogoController;
 use App\Http\Controllers\PostController;
@@ -135,6 +136,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/favicon-trash-list', [FaviconContorller::class, 'listFaviconTrash'])->name('favicons.trash');
         Route::get('/favicon-trash-update/{id}/{val}', [FaviconContorller::class, 'updateFaviconTrash']);
         Route::post('/delete', [FaviconContorller::class, 'deleteByAjax'])->name('favicons.delete.by-ajax');
+    });
+
+
+    // footers routes
+    Route::prefix('footers')->group(function () {
+        Route::resource('/footer-list', FooterController::class);
+        Route::post('/footer-edit-store', [FooterController::class, 'updateFooter']);
+        Route::get('/footer-status-update/{id}/{val}', [FooterController::class, 'updateFooterStatus']);
+        Route::get('/footer-trash-list', [FooterController::class, 'listFooterTrash'])->name('footers.trash');
+        Route::get('/footer-trash-update/{id}/{val}', [FooterController::class, 'updateFooterTrash']);
+        Route::post('/delete', [FooterController::class, 'deleteByAjax'])->name('footers.delete.by-ajax');
     });
 
 });

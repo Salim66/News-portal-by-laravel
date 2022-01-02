@@ -3104,6 +3104,316 @@
         });
 
 
+        //================= Footers ================//
+
+        //footer Table load by yijra datatable
+        $('#footer_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/footers/footer-list'
+            },
+            columns: [
+                {
+                    data: 'languages.name',
+                    name: 'languages.name'
+                },
+                {
+                    data: 'copyright_text',
+                    name: 'copyright_text'
+                },
+                {
+                    data: 'footer_text',
+                    name: 'footer_text'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input footer_status_update" id="customSwitchShadow${full.id}" ${full.status == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'trash',
+                    name: 'trash',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input footer_trash_update" id="customSwitchTrashShadow${full.id}" ${full.trash == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchTrashShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ]
+        });
+
+
+        //footer Trash Table load by yijra datatable
+        $('#footer_trash_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/footers/footer-trash-list'
+            },
+            columns: [
+                {
+                    data: 'languages.name',
+                    name: 'languages.name'
+                },
+                {
+                    data: 'copyright_text',
+                    name: 'copyright_text'
+                },
+                {
+                    data: 'footer_text',
+                    name: 'footer_text'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input footer_status_update" id="customSwitchShadow${full.id}" ${full.status == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'trash',
+                    name: 'trash',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input footer_trash_update" id="customSwitchTrashShadow${full.id}" ${full.trash == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchTrashShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ]
+        });
+
+
+        // Footer add by ajax
+        $(document).on('submit', '#footer_add_form', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                        "content"
+                    ),
+                },
+                url: '/footers/footer-list',
+                method: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $.notify(data.success, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+                    $('#footer_add_form')[0].reset();
+                    $('#add_footer_modal').modal('hide');
+                    $('#footer_table').DataTable().ajax.reload();
+                }
+            });
+        });
+
+        // footer edit data show modal admin purpose
+        $(document).on("click", ".edit_footer_data", function (e) {
+            e.preventDefault();
+            let edit_id = $(this).attr("edit_id");
+            // alert(edit_id);
+
+            $.ajax({
+                url: "/footers/footer-list/" + edit_id + '/edit',
+                type: "GET",
+                success: function (data) {
+                    $(".language_id").val(data.language_id);
+                    $(".c_r_text").val(data.copyright_text);
+                    $(".footer_text").val(data.footer_text);
+                    $(".footer_id").val(data.id);
+
+                    $("#edit_footer_modal").modal("show");
+                },
+            });
+        });
+
+
+        // footer update by ajax
+        $(document).on('submit', '#edit_footer_form', function (e) {
+            e.preventDefault();
+            let id = $('.footer_id').val();
+
+            // alert(id);
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                        "content"
+                    ),
+                },
+                url: '/footers/footer-edit-store',
+                method: "POST",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+
+                    $.notify(data.success, {
+                        globalPosition: 'top right',
+                        className: 'success'
+                    });
+                    // console.log(data);
+
+                    $('#footer_table').DataTable().ajax.reload();
+                    $('#footer_trash_table').DataTable().ajax.reload();
+                    $('#edit_footer_modal').modal('hide');
+
+                },
+
+            });
+
+        });
+
+
+        //Footer Status update
+        $(document).on("change", "input.footer_status_update", function () {
+            let id = $(this).attr("data_id");
+            let value = $(this).val();
+            // alert(value);
+
+            $.ajax({
+                url: "/footers/footer-status-update/" + id + '/' + value,
+                success: function (data) {
+                    $.notify(data, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+
+                    $('#footer_table').DataTable().ajax.reload();
+                    $('#footer_trash_table').DataTable().ajax.reload();
+
+                }
+            });
+
+        });
+
+
+        //Footer trash update
+        $(document).on("change", "input.footer_trash_update", function () {
+            let id = $(this).attr("data_id");
+            let value = $(this).val();
+
+            // alert(id);
+
+            $.ajax({
+                url: "/footers/footer-trash-update/" + id + '/' + value,
+                success: function (data) {
+                    $.notify(data, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+
+                    $('#footer_table').DataTable().ajax.reload();
+                    $('#footer_trash_table').DataTable().ajax.reload();
+
+                }
+            });
+        });
+
+        // Footer delete
+        $(document).on('submit', '#footer_delete_form', function (e) {
+            e.preventDefault();
+            let id = $('#delete_footer').val();
+            // alert(id);
+
+            swal(
+                {
+                    title: "Are you sure?",
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+
+                        $.ajax({
+                            headers: {
+                                "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                                    "content"
+                                ),
+                            },
+                            url: '/footers/delete',
+                            method: 'POST',
+                            data: { id: id },
+                            success: function (data) {
+                                swal(
+                                    {
+                                        title: "Deleted!",
+                                        type: "success"
+                                    },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            $.notify(data, {
+                                                globalPosition: "top right",
+                                                className: 'success'
+                                            });
+                                            console.log(data);
+
+                                            $('#footer_table').DataTable().ajax.reload();
+                                            $('#footer_trash_table').DataTable().ajax.reload();
+
+                                        }
+                                    }
+                                );
+                            }
+                        });
+
+                    } else {
+                        swal("Cancelled", "", "error");
+                    }
+                }
+            );
+
+
+
+        });
+
 
     });
 })(jQuery);
