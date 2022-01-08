@@ -9,3 +9,4 @@
 <link rel="stylesheet" href="{{ asset('/frontend/') }}/assets/css/style.css">
 <link rel="stylesheet" href="{{ asset('/frontend/') }}/assets/css/responsive.css">
 <link rel="stylesheet" type="text/css" href="{{ asset('backend/') }}/app-assets/css/all.min.css">
+<link rel="stylesheet" href="{{ asset('/frontend/') }}/assets/css/custom.css">

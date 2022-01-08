@@ -2,9 +2,14 @@
     <div class="main-responsive-nav">
        <div class="container">
           <div class="main-responsive-menu">
+            @php
+                $langauge = App\Models\Language::where('status', true)->first();
+                $logo = App\Models\Logo::where('language_id', $langauge->id)->where('status', true)->first();
+                // dd($categor);
+            @endphp
              <div class="logo">
                 <a href="index.html">
-                <img src="{{ asset('/frontend/') }}/assets/img/logo-1.png" alt="image">
+                    <img class="responsive-nav-logo" src="{{ URL::to('/') }}/media/logos/{{ $logo->logo }}" alt="image">
                 </a>
              </div>
           </div>
@@ -13,8 +18,8 @@
     <div class="main-navbar">
        <div class="container">
           <nav class="navbar navbar-expand-md navbar-light">
-             <a class="navbar-brand" href="index.html">
-             <img src="{{ asset('/frontend/') }}/assets/img/logo-1.png" alt="image">
+             <a class="navbar-brand" href="/">
+             <img class="nav-logo" src="{{ URL::to('/') }}/media/logos/{{ $logo->logo }}" alt="image">
              </a>
              <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                 <ul class="navbar-nav">

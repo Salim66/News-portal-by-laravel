@@ -22,22 +22,22 @@
                 <div class="single-new-news">
                     <div class="new-news-image">
                         @if($news->post_type == 'Image')
-                            <a href="#">
+                            <a href="{{ route('single.news', $news->slug) }}">
                                 <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
                             </a>
                         @endif
                         @if($news->post_type == 'Gallery')
-                            <a href="#">
-                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery }}" alt="image">
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
                             </a>
                         @endif
                         @if($news->post_type == 'Video')
-                            <a href="#">
+                            <a href="{{ route('single.news', $news->slug) }}">
                                 <iframe style="width: 100%" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
                             </a>
                         @endif
                         @if($news->post_type == 'Audio')
-                            <a href="#">
+                            <a href="{{ route('single.news', $news->slug) }}">
                                 <iframe style="width: 100%" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
                             </a>
                         @endif
@@ -48,7 +48,7 @@
                         @endforeach
 
                         <h3>
-                            <a href="#">{{ $news->title }}</a>
+                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
                         </h3>
                         <p>{{ date('d F Y', strtotime($news->created_at)) }}</p>
                     </div>
@@ -73,24 +73,24 @@
                         // dd($featured_info);
                     @endphp
 
-                    @if($thumbnail_post->post_type == 'Image')
-                            <a href="#">
+                        @if($thumbnail_post->post_type == 'Image')
+                            <a href="{{ route('single.news', $thumbnail_post->slug) }}">
                                 <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
                             </a>
                         @endif
                         @if($thumbnail_post->post_type == 'Gallery')
-                            <a href="#">
-                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery }}" alt="image">
+                            <a href="{{ route('single.news', $thumbnail_post->slug) }}">
+                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
                             </a>
                         @endif
                         @if($thumbnail_post->post_type == 'Video')
-                            <a href="#">
-                                <iframe style="width: 100%" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                            <a href="{{ route('single.news', $thumbnail_post->slug) }}">
+                                <iframe class="home-latest__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
                             </a>
                         @endif
                         @if($thumbnail_post->post_type == 'Audio')
-                            <a href="#">
-                                <iframe style="width: 100%" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                            <a href="{{ route('single.news', $thumbnail_post->slug) }}">
+                                <iframe class="home-latest__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
                             </a>
                         @endif
                    <div class="new-news-content">
@@ -98,7 +98,7 @@
                        <span>{{ $category->name }}</span>
                        @endforeach
                       <h3>
-                         <a href="#">{{ $thumbnail_post->title }}</a>
+                         <a href="{{ route('single.news', $thumbnail_post->slug) }}">{{ $thumbnail_post->title }}</a>
                       </h3>
                       <p>{{ date('d F Y', strtotime($thumbnail_post->created_at)) }}</p>
                    </div>
@@ -127,7 +127,7 @@
                         <span>{{ $category->name }}</span>,
                         @endforeach
                         <h4>
-                            <a href="#">{{ $news->title }}</a>
+                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
                         </h4>
                         <p>{{ date('d F Y', strtotime($news->created_at)) }}</p>
                         </div>
@@ -871,156 +871,9 @@
           </div>
           <div class="col-lg-4">
              <aside class="widget-area">
-                <section class="widget widget_stay_connected">
-                   <h3 class="widget-title">Stay connected</h3>
-                   <ul class="stay-connected-list">
-                      <li>
-                         <a href="#">
-                         <i class='bx bxl-facebook'></i>
-                         120,345 Fans
-                         </a>
-                      </li>
-                      <li>
-                         <a href="#" class="twitter">
-                         <i class='bx bxl-twitter'></i>
-                         25,321 Followers
-                         </a>
-                      </li>
-                      <li>
-                         <a href="#" class="linkedin">
-                         <i class='bx bxl-linkedin'></i>
-                         7,519 Connect
-                         </a>
-                      </li>
-                      <li>
-                         <a href="#" class="youtube">
-                         <i class='bx bxl-youtube'></i>
-                         101,545 Subscribers
-                         </a>
-                      </li>
-                      <li>
-                         <a href="#" class="instagram">
-                         <i class='bx bxl-instagram'></i>
-                         10,129 Followers
-                         </a>
-                      </li>
-                      <li>
-                         <a href="#" class="wifi">
-                         <i class='bx bx-wifi'></i>
-                         952 Subscribers
-                         </a>
-                      </li>
-                   </ul>
-                </section>
-                <section class="widget widget_featured_reports">
-                   <h3 class="widget-title">Featured reports</h3>
-                   <div class="single-featured-reports">
-                      <div class="featured-reports-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/featured-reports/featured-reports-2.jpg" alt="image">
-                         </a>
-                         <div class="featured-reports-content">
-                            <h3>
-                               <a href="#">All the highlights from western fashion week summer 2021</a>
-                            </h3>
-                            <p><a href="#">Patricia</a> / 28 September, 2021</p>
-                         </div>
-                      </div>
-                   </div>
-                </section>
-                <section class="widget widget_latest_news_thumb">
-                   <h3 class="widget-title">Latest news</h3>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg1" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Negotiations on a peace agreement between the two countries</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg2" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Love songs helped me through heartbreak</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg3" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">This movement aims to establish women rights</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg4" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Giving special powers to police officers to prevent crime</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg5" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Copy paste the style of your element Newspaper</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg6" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Take the tour to explore the new header manager</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg7" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">As well as stopping goals, Christiane Endler is opening.</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg8" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">These are the 10 colors Set to dominate fashion week</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg9" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Spotted! what the editors wore to fashion week fall</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg10" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">As well as stopping goals for an, cristiane endler is opening</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                </section>
+
+                @include('frontend.layouts.latest-news-thumb')
+
                 <section class="widget widget_newsletter">
                    <div class="newsletter-content">
                       <h3>Subscribe to our newsletter</h3>

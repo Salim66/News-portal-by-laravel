@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -39,6 +40,18 @@ class IndexController extends Controller
             return redirect()->back();
 
         }
+    }
+
+    /**
+     * single news show
+     */
+    public function singleNews($slug){
+        $news = Post::where('slug', $slug)->first();
+        $news->views += 1;
+        $news->update();
+        return view('frontend.single-news', [
+            'news'  => $news
+        ]);
     }
 
 }

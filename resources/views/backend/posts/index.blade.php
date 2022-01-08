@@ -162,6 +162,7 @@
                             </div>
                             @php
                                 $languages = App\Models\Language::where('status', true)->where('trash', false)->get();
+                                // dd($languages);
                             @endphp
                             <div class="col-md-6">
                                 <div class="form-group">

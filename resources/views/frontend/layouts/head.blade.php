@@ -13,5 +13,11 @@
           @if($title->languages->status == true)@yield('title', "$title->website_title")@endif
         @endforeach
       </title>
-    <link rel="icon" type="image/png" href="{{ asset('/frontend/') }}/assets/img/favicon.png">
+
+      @php
+          $language = App\Models\Language::where('status', true)->first();
+          $favicon = App\Models\Favicon::where('language_id', $language->id)->where('status', true)->first();
+        //   dd($favicon);
+      @endphp
+    <link rel="icon" type="image/png" href="{{ URL::to('/') }}/media/favicons/{{ $favicon->favicon }}">
  </head>

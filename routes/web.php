@@ -28,6 +28,7 @@ use App\Http\Controllers\WebsiteContent;
 */
 
 Route::get('/', [IndexController::class, 'index']);
+Route::get('/single-news/{slug}', [IndexController::class, 'singleNews'])->name('single.news');
 Route::get('change-language/{id}', [IndexController::class, 'changeLanguage'])->name('change.language');
 
 
