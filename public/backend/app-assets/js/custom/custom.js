@@ -2125,6 +2125,33 @@
             $(".post_image_v").hide();
         }
 
+        $(document).on('change', '.edit_post_format', function(e){
+            e.preventDefault();
+            let format = $(this).children('option:selected').val();
+            if (format == "Image") {
+                $(".post_image").show();
+            } else {
+                $(".post_image").hide();
+            }
+            if (format == "Gallery") {
+                $(".post_image_g").show();
+            } else {
+                $(".post_image_g").hide();
+            }
+
+            if (format == "Audio") {
+                $(".post_image_a").show();
+            } else {
+                $(".post_image_a").hide();
+            }
+
+            if (format == "Video") {
+                $(".post_image_v").show();
+            } else {
+                $(".post_image_v").hide();
+            }
+        });
+
 
         // post update by ajax
         $(document).on('submit', '#edit_post_form', function (e) {
@@ -3413,6 +3440,656 @@
 
 
         });
+
+
+        //================= Website Title ================//
+
+        //Website Title Table load by yijra datatable
+        $('#website_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/websites/website-list'
+            },
+            columns: [
+                {
+                    data: 'languages.name',
+                    name: 'languages.name'
+                },
+                {
+                    data: 'website_title',
+                    name: 'website_title'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input website_status_update" id="customSwitchShadow${full.id}" ${full.status == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'trash',
+                    name: 'trash',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input website_trash_update" id="customSwitchTrashShadow${full.id}" ${full.trash == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchTrashShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ]
+        });
+
+
+        //Website Title Trash Table load by yijra datatable
+        $('#website_trash_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/websites/website-trash-list'
+            },
+            columns: [
+                {
+                    data: 'languages.name',
+                    name: 'languages.name'
+                },
+                {
+                    data: 'website_title',
+                    name: 'website_title'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input website_status_update" id="customSwitchShadow${full.id}" ${full.status == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'trash',
+                    name: 'trash',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input website_trash_update" id="customSwitchTrashShadow${full.id}" ${full.trash == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchTrashShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ]
+        });
+
+
+        // Website add by ajax
+        $(document).on('submit', '#website_add_form', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                        "content"
+                    ),
+                },
+                url: '/websites/website-list',
+                method: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $.notify(data.success, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+                    $('#website_add_form')[0].reset();
+                    $('#add_website_modal').modal('hide');
+                    $('#website_table').DataTable().ajax.reload();
+                }
+            });
+        });
+
+        // website edit data show modal admin purpose
+        $(document).on("click", ".edit_website_data", function (e) {
+            e.preventDefault();
+            let edit_id = $(this).attr("edit_id");
+            // alert(edit_id);
+
+            $.ajax({
+                url: "/websites/website-list/" + edit_id + '/edit',
+                type: "GET",
+                success: function (data) {
+                    $(".language_id").val(data.language_id);
+                    $(".website_title").val(data.website_title);
+                    $(".website_id").val(data.id);
+
+                    $("#edit_website_modal").modal("show");
+                },
+            });
+        });
+
+
+        // website update by ajax
+        $(document).on('submit', '#edit_website_form', function (e) {
+            e.preventDefault();
+            let id = $('.website_id').val();
+
+            // alert(id);
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                        "content"
+                    ),
+                },
+                url: '/websites/website-edit-store',
+                method: "POST",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+
+                    $.notify(data.success, {
+                        globalPosition: 'top right',
+                        className: 'success'
+                    });
+                    // console.log(data);
+
+                    $('#website_table').DataTable().ajax.reload();
+                    $('#website_trash_table').DataTable().ajax.reload();
+                    $('#edit_website_modal').modal('hide');
+
+                },
+
+            });
+
+        });
+
+
+        //Website Status update
+        $(document).on("change", "input.website_status_update", function () {
+            let id = $(this).attr("data_id");
+            let value = $(this).val();
+            // alert(value);
+
+            $.ajax({
+                url: "/websites/website-status-update/" + id + '/' + value,
+                success: function (data) {
+                    $.notify(data, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+
+                    $('#website_table').DataTable().ajax.reload();
+                    $('#website_trash_table').DataTable().ajax.reload();
+
+                }
+            });
+
+        });
+
+
+        //Website trash update
+        $(document).on("change", "input.website_trash_update", function () {
+            let id = $(this).attr("data_id");
+            let value = $(this).val();
+
+            // alert(id);
+
+            $.ajax({
+                url: "/websites/website-trash-update/" + id + '/' + value,
+                success: function (data) {
+                    $.notify(data, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+
+                    $('#website_table').DataTable().ajax.reload();
+                    $('#website_trash_table').DataTable().ajax.reload();
+
+                }
+            });
+        });
+
+        // website delete
+        $(document).on('submit', '#website_delete_form', function (e) {
+            e.preventDefault();
+            let id = $('#delete_website').val();
+            // alert(id);
+
+            swal(
+                {
+                    title: "Are you sure?",
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+
+                        $.ajax({
+                            headers: {
+                                "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                                    "content"
+                                ),
+                            },
+                            url: '/websites/delete',
+                            method: 'POST',
+                            data: { id: id },
+                            success: function (data) {
+                                swal(
+                                    {
+                                        title: "Deleted!",
+                                        type: "success"
+                                    },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            $.notify(data, {
+                                                globalPosition: "top right",
+                                                className: 'success'
+                                            });
+                                            console.log(data);
+
+                                            $('#website_table').DataTable().ajax.reload();
+                                            $('#website_trash_table').DataTable().ajax.reload();
+
+                                        }
+                                    }
+                                );
+                            }
+                        });
+
+                    } else {
+                        swal("Cancelled", "", "error");
+                    }
+                }
+            );
+
+
+
+        });
+
+
+
+        //================= Social Link ================//
+
+        //Social Title Table load by yijra datatable
+        $('#social_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/socials/social-list'
+            },
+            columns: [
+                {
+                    data: 'languages.name',
+                    name: 'languages.name'
+                },
+                {
+                    data: 'icon',
+                    name: 'icon',
+                    render: function (data, type, full, meta) {
+                        return `<i class="${data}"></i>`;
+                    }
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'link',
+                    name: 'link'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input social_status_update" id="customSwitchShadow${full.id}" ${full.status == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'trash',
+                    name: 'trash',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input social_trash_update" id="customSwitchTrashShadow${full.id}" ${full.trash == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchTrashShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ]
+        });
+
+
+        //Social Title Trash Table load by yijra datatable
+        $('#social_trash_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/socials/social-trash-list'
+            },
+            columns: [
+                {
+                    data: 'languages.name',
+                    name: 'languages.name'
+                },
+                {
+                    data: 'icon',
+                    name: 'icon',
+                    render: function (data, type, full, meta) {
+                        return `<i class="${data}"></i>`;
+                    }
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'link',
+                    name: 'link'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input social_status_update" id="customSwitchShadow${full.id}" ${full.status == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'trash',
+                    name: 'trash',
+                    render: function (data, type, full, meta) {
+                        return `
+
+                            <div class="custom-control custom-switch custom-switch-shadow custom-control-inline">
+                                <input type="checkbox" data_id="${full.id}" class="custom-control-input social_trash_update" id="customSwitchTrashShadow${full.id}" ${full.trash == true ? 'checked="checked"' : ''} value="${data}">
+                                <label class="custom-control-label" for="customSwitchTrashShadow${full.id}">
+                                </label>
+                            </div>
+
+                            `;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ]
+        });
+
+
+         //icon name get and set input field
+         $(document).on('change', '#social_icon', function (e) {
+            let icon = $(this).children();
+            let setIcon = icon[0];
+            // console.log(setIcon.replace('<svg', '<i'));
+
+            $('#icon_name').val(icon[0].className);
+            $('#edit_social_icon_name').val(icon[0].className);
+
+        });
+
+        //icon name get and set input field edit category
+        $(document).on('change', '#update_social_icon', function (e) {
+            let icon = $(this).children();
+
+            $('#edit_social_icon_name').val(icon[0].className);
+
+        });
+
+        // Social add by ajax
+        $(document).on('submit', '#social_add_form', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                        "content"
+                    ),
+                },
+                url: '/socials/social-list',
+                method: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    // console.log(data);
+                    $.notify(data.success, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+                    $('#social_add_form')[0].reset();
+                    $('#add_social_modal').modal('hide');
+                    $('#social_table').DataTable().ajax.reload();
+                }
+            });
+        });
+
+        // social edit data show modal admin purpose
+        $(document).on("click", ".edit_social_data", function (e) {
+            e.preventDefault();
+            let edit_id = $(this).attr("edit_id");
+            // alert(edit_id);
+
+            $.ajax({
+                url: "/socials/social-list/" + edit_id + '/edit',
+                type: "GET",
+                success: function (data) {
+                    $(".language_id").val(data.language_id);
+                    $(".social_name").val(data.name);
+                    $(".social_link").val(data.link);
+                    $("#edit_social_icon_name").val(data.icon);
+                    $("#icon_up").val(data.icon);
+                    $(".social_id").val(data.id);
+
+                    $("#edit_social_modal").modal("show");
+                },
+            });
+        });
+
+
+        // social update by ajax
+        $(document).on('submit', '#edit_social_form', function (e) {
+            e.preventDefault();
+            let id = $('.social_id').val();
+
+            // alert(id);
+
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                        "content"
+                    ),
+                },
+                url: '/socials/social-edit-store',
+                method: "POST",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+
+                    $.notify(data.success, {
+                        globalPosition: 'top right',
+                        className: 'success'
+                    });
+                    // console.log(data);
+
+                    $('#social_table').DataTable().ajax.reload();
+                    $('#social_trash_table').DataTable().ajax.reload();
+                    $('#edit_social_modal').modal('hide');
+
+                },
+
+            });
+
+        });
+
+
+        //Social Status update
+        $(document).on("change", "input.social_status_update", function () {
+            let id = $(this).attr("data_id");
+            let value = $(this).val();
+            // alert(value);
+
+            $.ajax({
+                url: "/socials/social-status-update/" + id + '/' + value,
+                success: function (data) {
+                    $.notify(data, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+
+                    $('#social_table').DataTable().ajax.reload();
+                    $('#social_trash_table').DataTable().ajax.reload();
+
+                }
+            });
+
+        });
+
+
+        //Social trash update
+        $(document).on("change", "input.social_trash_update", function () {
+            let id = $(this).attr("data_id");
+            let value = $(this).val();
+
+            // alert(id);
+
+            $.ajax({
+                url: "/socials/social-trash-update/" + id + '/' + value,
+                success: function (data) {
+                    $.notify(data, {
+                        globalPosition: "top right",
+                        className: "success"
+                    });
+
+                    $('#social_table').DataTable().ajax.reload();
+                    $('#social_trash_table').DataTable().ajax.reload();
+
+                }
+            });
+        });
+
+        // social delete
+        $(document).on('submit', '#social_delete_form', function (e) {
+            e.preventDefault();
+            let id = $(this).attr('delete_id');
+            // alert(id);
+
+            swal(
+                {
+                    title: "Are you sure?",
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+
+                        $.ajax({
+                            headers: {
+                                "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr(
+                                    "content"
+                                ),
+                            },
+                            url: '/socials/delete/' + id ,
+                            method: 'POST',
+                            success: function (data) {
+                                swal(
+                                    {
+                                        title: "Deleted!",
+                                        type: "success"
+                                    },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            $.notify(data, {
+                                                globalPosition: "top right",
+                                                className: 'success'
+                                            });
+                                            // console.log(data);
+
+                                            $('#social_table').DataTable().ajax.reload();
+                                            $('#social_trash_table').DataTable().ajax.reload();
+
+                                        }
+                                    }
+                                );
+                            }
+                        });
+
+                    } else {
+                        swal("Cancelled", "", "error");
+                    }
+                }
+            );
+
+
+
+        });
+
 
 
     });

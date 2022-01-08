@@ -151,7 +151,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                 <label for="validationCustom03">Post Type</label>
-                                <select name="post_type" class="form-control p_post_type" id="edit_post_format">
+                                <select name="post_type" class="form-control p_post_type edit_post_format" id="edit_post_format">
                                     <option selected disabled>----Select Post Type----</option>
                                     <option value="Image">Image</option>
                                     <option value="Gallery">Gallery</option>

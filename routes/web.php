@@ -3,14 +3,18 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FaviconContorller;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LogoController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SocialLink;
+use App\Http\Controllers\SocialLinkController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\WebsiteContent;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +27,8 @@ use App\Http\Controllers\TagController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [IndexController::class, 'index']);
+Route::get('change-language/{id}', [IndexController::class, 'changeLanguage'])->name('change.language');
 
 
 
@@ -147,6 +150,28 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/footer-trash-list', [FooterController::class, 'listFooterTrash'])->name('footers.trash');
         Route::get('/footer-trash-update/{id}/{val}', [FooterController::class, 'updateFooterTrash']);
         Route::post('/delete', [FooterController::class, 'deleteByAjax'])->name('footers.delete.by-ajax');
+    });
+
+
+    // website content routes
+    Route::prefix('websites')->group(function () {
+        Route::resource('/website-list', WebsiteContent::class);
+        Route::post('/website-edit-store', [WebsiteContent::class, 'updateWebsite']);
+        Route::get('/website-status-update/{id}/{val}', [WebsiteContent::class, 'updateWebsiteStatus']);
+        Route::get('/website-trash-list', [WebsiteContent::class, 'listWebsiteTrash'])->name('websites.trash');
+        Route::get('/website-trash-update/{id}/{val}', [WebsiteContent::class, 'updateWebsiteTrash']);
+        Route::post('/delete', [WebsiteContent::class, 'deleteByAjax'])->name('websites.delete.by-ajax');
+    });
+
+
+    // website content routes
+    Route::prefix('socials')->group(function () {
+        Route::resource('/social-list', SocialLinkController::class);
+        Route::post('/social-edit-store', [SocialLinkController::class, 'updateSocial']);
+        Route::get('/social-status-update/{id}/{val}', [SocialLinkController::class, 'updateSocialStatus']);
+        Route::get('/social-trash-list', [SocialLinkController::class, 'listSocialTrash'])->name('socials.trash');
+        Route::get('/social-trash-update/{id}/{val}', [SocialLinkController::class, 'updateSocialTrash']);
+        Route::post('/delete/{id}', [SocialLinkController::class, 'deleteByAjax'])->name('socials.delete.by-ajax');
     });
 
 });

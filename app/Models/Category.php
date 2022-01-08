@@ -12,9 +12,9 @@ class Category extends Model
     protected $guarded = [];
 
 
-    public function categories()
-    {
-        return $this->belongsTo(Category::class, 'parent_id');
+    // get child category
+    public function categories(){
+        return $this->hasMany('App\Models\Category', 'parent_id');
     }
 
     public function languages(){

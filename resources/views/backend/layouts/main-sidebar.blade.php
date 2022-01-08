@@ -163,6 +163,14 @@
               <li class=""><a class="d-flex align-items-center" href="{{ route('footer-list.index') }}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate">Footer</span></a>
               </li>
             </ul>
+            <ul class="menu-content">
+              <li class=""><a class="d-flex align-items-center" href="{{ route('website-list.index') }}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate">Website Title</span></a>
+              </li>
+            </ul>
+            <ul class="menu-content">
+              <li class=""><a class="d-flex align-items-center" href="{{ route('social-list.index') }}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item text-truncate">Social Link</span></a>
+              </li>
+            </ul>
         </li>
 
         <li class=" nav-item"><a href="app-email.html"><i class=""></i><span class="menu-title text-truncate" data-i18n="Email">Email</span></a>

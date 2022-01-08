@@ -23,13 +23,15 @@
 <!-- END: Theme CSS-->
 
 <!-- Dropify CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" type="text/css" href="{{ asset('backend/') }}/app-assets/css/dropify.min.css">
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css" href="{{ asset('backend/') }}/app-assets/css/core/menu/menu-types/vertical-menu.min.css">
 <!-- END: Page CSS-->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" type="text/css" href="{{ asset('backend/') }}/app-assets/css/all.min.css">
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
 
 <style type="text/css">
     .notifyjs-corner{
@@ -39,6 +41,10 @@
 <!-- Sweetalert -->
 <script src="{{asset('backend/assets/')}}/sweetalert/sweetalert.js"></script>
 <link href="{{asset('backend/assets/')}}/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+
+<!-- Icon Picker -->
+<link rel="stylesheet" href="{{ asset('backend/assets/dist/css/bootstrap-iconpicker.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/assets/dist/css/bootstrap-iconpicker.min.css') }}">
 
 <!-- BEGIN: Custom CSS-->
 <link rel="stylesheet" type="text/css" href="{{ asset('backend/') }}/assets/css/style.css">

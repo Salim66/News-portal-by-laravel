@@ -32,12 +32,21 @@
  <script src="//cdn.ckeditor.com/4.16.1/full/ckeditor.js"></script>
  <script src="{{ asset('backend/') }}/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
  <script src="{{ asset('backend/') }}/app-assets/js/scripts/forms/select/form-select2.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ <script src="{{ asset('backend/') }}/app-assets/js/dropify.min.js"></script>
+ {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
  <!-- END: Theme JS-->
+
+ <!-- Icon Picker -->
+<script src="{{ asset('backend/assets/dist/') }}/js/bootstrap-iconpicker.bundle.min.js"></script>
+<script src="{{ asset('backend/assets/dist/') }}/js/bootstrap-iconpicker.js"></script>
+<script src="{{ asset('backend/assets/dist/') }}/js/bootstrap-iconpicker.min.js"></script>
+<script src="{{ asset('backend/assets/dist/') }}/js/bootstrap-iconpicker-iconset-all.js"></script>
+<script src="{{ asset('backend/assets/dist/') }}/js/bootstrap-iconpicker-iconset-all.min.js"></script>
 
  <script src="{{ asset('backend/') }}/app-assets/js/scripts/datatables/datatable.min.js"></script>
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-fzff82+8pzHnwA1mQ0dzz9/E0B+ZRizq08yZfya66INZBz86qKTCt9MLU0NCNIgaMJCgeyhujhasnFUsYMsi0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ <script src="{{ asset('backend/') }}/app-assets/js/all.min.js"></script>
+ {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-fzff82+8pzHnwA1mQ0dzz9/E0B+ZRizq08yZfya66INZBz86qKTCt9MLU0NCNIgaMJCgeyhujhasnFUsYMsi0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 
  <script src="{{ asset('backend/') }}/app-assets/js/custom/custom.js"></script>
 

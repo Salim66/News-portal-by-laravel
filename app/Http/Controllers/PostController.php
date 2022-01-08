@@ -218,7 +218,7 @@ class PostController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function updatePost( Request $request ) {
-
+        // return $request->all();
         //find post data
         $data = Post::find( $request->id );
         if ( $data != null ) {
