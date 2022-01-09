@@ -23,14 +23,14 @@
              </a>
              <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                   <li class="nav-item">
+                   {{-- <li class="nav-item">
                       <a href="/" class="nav-link active">
                       Home
                       </a>
-                   </li>
+                   </li> --}}
                    @php
                         $langauge = App\Models\Language::where('status', true)->first();
-                        $categor = App\Models\Category::withCount('categories')->with('languages')->where('language_id', $langauge->id)->where('parent_id', null)->where('status', true)->take(8)->get();
+                        $categor = App\Models\Category::withCount('categories')->with('languages')->where('language_id', $langauge->id)->where('parent_id', null)->where('status', true)->take(7)->get();
                         // dd($categor);
                    @endphp
 

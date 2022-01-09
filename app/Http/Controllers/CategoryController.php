@@ -39,7 +39,7 @@ class CategoryController extends Controller {
         // check ajax request by yjra datatable
         if ( request()->ajax() ) {
 
-            return datatables()->of( Category::with('languages')->with('categories')->where('parent_id', '!=', null)->where( 'trash', false )->latest()->get() )->addColumn( 'action', function ( $data ) {
+            return datatables()->of( Category::with('languages')->with('categorie')->where('parent_id', '!=', null)->where( 'trash', false )->latest()->get() )->addColumn( 'action', function ( $data ) {
                 $output = '<a title="Edit" edit_id="' . $data['id'] . '" href="#" class="btn btn-sm btn-warning edit_category_data"><i class="fas fa-user-edit text-white"></i></a>';
                 return $output;
             } )->rawColumns( ['action'] )->make( true );
@@ -213,7 +213,7 @@ class CategoryController extends Controller {
         // check ajax request by yjra datatable
         if ( request()->ajax() ) {
 
-            return datatables()->of( Category::with('languages')->with('categories')->where('parent_id', '!=', null)->where('trash', true)->latest()->get() )->addColumn( 'action', function ( $data ) {
+            return datatables()->of( Category::with('languages')->with('categorie')->where('parent_id', '!=', null)->where('trash', true)->latest()->get() )->addColumn( 'action', function ( $data ) {
                 $output = '<form style="display: inline;" action="#" method="POST" id="category_delete_form"><input type="hidden" name="id" id="delete_category" value="' . $data['id'] . '"><button type="submit" class="btn btn-sm ml-1 btn-danger" ><i class="fa fa-trash"></i></button></form>';
                 return $output;
             } )->rawColumns( ['action'] )->make( true );
@@ -249,14 +249,14 @@ class CategoryController extends Controller {
     public function deleteByAjax( Request $request ) {
 
         $delete_id = $request->id;
+        // return $delete_id;
         $data = Category::findOrFail( $delete_id );
         // return $data;
 
         try {
 
             if ( $data ) {
-
-                foreach($data->childCat as $child){
+                foreach($data->categories as $child){
                     $child->delete();
                 }
                 $data->delete();

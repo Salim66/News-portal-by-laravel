@@ -517,8 +517,8 @@
                     name: 'name'
                 },
                 {
-                    data: 'categories.name',
-                    name: 'categories.name'
+                    data: 'categorie.name',
+                    name: 'categorie.name'
                 },
                 {
                     data: 'status',

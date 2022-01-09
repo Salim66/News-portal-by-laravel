@@ -226,45 +226,7 @@
                      
                      @include('frontend.layouts.latest-news-thumb')
 
-                     <section class="widget widget_popular_posts_thumb">
-                        <h3 class="widget-title">Popular posts</h3>
-                        <article class="item">
-                           <a href="#" class="thumb">
-                           <span class="fullimage cover bg1" role="img"></span>
-                           </a>
-                           <div class="info">
-                              <h4 class="title usmall"><a href="#">Match between United States and England at AGD stadium</a></h4>
-                              <span>28 September, 2021</span>
-                           </div>
-                        </article>
-                        <article class="item">
-                           <a href="#" class="thumb">
-                           <span class="fullimage cover bg2" role="img"></span>
-                           </a>
-                           <div class="info">
-                              <h4 class="title usmall"><a href="#">For the last time, he addressed the people</a></h4>
-                              <span>28 September, 2021</span>
-                           </div>
-                        </article>
-                        <article class="item">
-                           <a href="#" class="thumb">
-                           <span class="fullimage cover bg3" role="img"></span>
-                           </a>
-                           <div class="info">
-                              <h4 class="title usmall"><a href="#">The coronavairus is finished and the outfit is busy</a></h4>
-                              <span>28 September, 2021</span>
-                           </div>
-                        </article>
-                        <article class="item">
-                           <a href="#" class="thumb">
-                           <span class="fullimage cover bg4" role="img"></span>
-                           </a>
-                           <div class="info">
-                              <h4 class="title usmall"><a href="#">A fierce battle is going on between the two in the game</a></h4>
-                              <span>28 September, 2021</span>
-                           </div>
-                        </article>
-                     </section>
+                     @include('frontend.layouts.popular-post')
                      
                      <section class="widget widget_newsletter">
                         <div class="newsletter-content">
@@ -293,22 +255,9 @@
                            </div>
                         </div>
                      </section>
-                     <section class="widget widget_tag_cloud">
-                        <h3 class="widget-title">Tags</h3>
-                        <div class="tagcloud">
-                           <a href="#">News</a>
-                           <a href="#">Business</a>
-                           <a href="#">Health</a>
-                           <a href="#">Politics</a>
-                           <a href="#">Magazine</a>
-                           <a href="#">Sport</a>
-                           <a href="#">Tech</a>
-                           <a href="#">Video</a>
-                           <a href="#">Global</a>
-                           <a href="#">Culture</a>
-                           <a href="#">Fashion</a>
-                        </div>
-                     </section>
+                     
+                     @include('frontend.layouts.tag-list')
+
                      <section class="widget widget_instagram">
                         <h3 class="widget-title">Instagram</h3>
                         <ul>

@@ -33,12 +33,12 @@
                         @endif
                         @if($news->post_type == 'Video')
                             <a href="{{ route('single.news', $news->slug) }}">
-                                <iframe style="width: 100%" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                <iframe class="top-news__single" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
                             </a>
                         @endif
                         @if($news->post_type == 'Audio')
                             <a href="{{ route('single.news', $news->slug) }}">
-                                <iframe style="width: 100%" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                <iframe class="top-news__single" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
                             </a>
                         @endif
                     <div class="new-news-content">
@@ -146,412 +146,667 @@
           <div class="col-lg-8">
              <div class="most-popular-news">
                 <div class="section-title">
+                   @if($language->id == 1)
                    <h2>Most popular</h2>
+                   @elseif($language->id == 2)
+                   <h2>সবচেয়ে জনপ্রিয়</h2>
+                   @endif
                 </div>
                 <div class="row">
-                   <div class="col-lg-6 col-md-6">
-                      <div class="single-most-popular-news">
-                         <div class="popular-news-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/most-popular/most-popular-1.jpg" alt="image">
-                            </a>
-                         </div>
-                         <div class="popular-news-content">
-                            <span>Politics</span>
-                            <h3>
-                               <a href="#">The Prime Minister’s said that selfish nations are constantly dying for their won interests</a>
-                            </h3>
-                            <p><a href="#">Patricia</a> / 28 September, 2021</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6 col-md-6">
-                      <div class="single-most-popular-news">
-                         <div class="popular-news-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/most-popular/most-popular-7.jpg" alt="image">
-                            </a>
-                         </div>
-                         <div class="popular-news-content">
-                            <span>Premer league</span>
-                            <h3>
-                               <a href="#">Manchester United’s dream of winning by a goal was fulfilled</a>
-                            </h3>
-                            <p><a href="#">Gonzalez</a> / 28 September, 2021</p>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6">
-                      <div class="most-popular-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="post-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/most-popular/most-popular-3.jpg" alt="image">
-                                  </a>
-                               </div>
+                    
+                    @php
+                        $most_popular = App\Models\Post::where('language_id', $language->id)->where('post_type', '!=', 'Video')->where('post_type', '!=', 'Audio')->orderBy('views', 'desc')->get();
+                    @endphp
+
+                    @foreach($most_popular as $key => $news)
+                    @if($key < 2)
+                     @php
+                        $featured_info = json_decode($news->featured);
+                        // dd($featured_info);
+                     @endphp
+                     
+                     <div class="col-lg-6 col-md-6">
+                        <div class="single-most-popular-news">
+                           <div class="popular-news-image">
+                            @if($news->post_type == 'Image')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                </a>
+                            @endif
+                            @if($news->post_type == 'Gallery')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                </a>
+                            @endif
+                            @if($news->post_type == 'Video')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                </a>
+                            @endif
+                            @if($news->post_type == 'Audio')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                </a>
+                            @endif
+                           </div>
+                           <div class="popular-news-content">
+                            @foreach($news->categories as $category)
+                                <span>{{ $category->name }}</span>
+                            @endforeach
+                              <h3>
+                                 <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                              </h3>
+                              <p>{{ date('d F Y', strtotime($news->created_at)) }}</p>
+                           </div>
+                        </div>
+                     </div>
+                   @endif
+                   @endforeach
+            
+
+                   @foreach($most_popular as $key => $news)
+                    @if($key >= 2 && $key <6 )
+                     @php
+                        $featured_info = json_decode($news->featured);
+                        // dd($featured_info);
+                     @endphp
+                   
+                     <div class="col-lg-6">
+                        <div class="most-popular-post">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 col-sm-4">
+                                <div class="post-image">
+                                    @if($news->post_type == 'Image')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Gallery')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Video')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Audio')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                </div>
+                                </div>
+                                <div class="col-lg-8 col-sm-8">
+                                <div class="post-content">
+                                    @foreach($news->categories as $category)
+                                        <span>{{ $category->name }}</span>
+                                    @endforeach
+                                    <h3>
+                                        <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                    </h3>
+                                    <p>{{ date('d F Y', strtotime($news->created_at)) }}</p>
+                                </div>
+                                </div>
                             </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="post-content">
-                                  <span>Culture</span>
-                                  <h3>
-                                     <a href="#">As well as stopping goals, Christiane Endler is opening.</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6">
-                      <div class="most-popular-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="post-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/most-popular/most-popular-4.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="post-content">
-                                  <span>Technology</span>
-                                  <h3>
-                                     <a href="#">The majority of news published online presents more videos</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6">
-                      <div class="most-popular-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="post-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/most-popular/most-popular-5.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="post-content">
-                                  <span>Business</span>
-                                  <h3>
-                                     <a href="#">This movement aims to establish women’s rights.</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6">
-                      <div class="most-popular-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="post-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/most-popular/most-popular-6.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="post-content">
-                                  <span>Politics</span>
-                                  <h3>
-                                     <a href="#">Trump discusses various issues with his party’s political leaders.</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
+                        </div>
+                     </div>
+                    @endif
+                   @endforeach
+                   
                 </div>
              </div>
+
+             @php
+                $top_video = App\Models\Post::where('language_id', $language->id)->where('post_type', 'Video')->orderBy('views', 'desc')->get();
+                // dd($top_video);
+             @endphp
+
              <div class="video-news">
                 <div class="section-title">
+                   @if($language->id == 1)
                    <h2>Top video</h2>
+                   @elseif($language->id == 2)
+                   <h2>শীর্ষ ভিডিও</h2>
+                   @endif
                 </div>
                 <div class="video-slides owl-carousel owl-theme">
+                    @foreach($top_video as $video)
+                    @php
+                        $featured_info = json_decode($video->featured);
+                        // dd($featured_info);
+                    @endphp
                    <div class="video-item">
                       <div class="video-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/video-news/video-news-4.jpg" alt="image">
-                         </a>
-                         <a href="https://www.youtube.com/watch?v=UG8N5JT4QLc" class="popup-youtube">
+                        @if($video->post_type == 'Video')
+                        <a href="{{ route('single.news', $news->slug) }}">
+                            <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                        </a>
+                        @endif
+                         <a href="{{ $featured_info->post_video }}" class="popup-youtube">
                          <i class='bx bx-play-circle'></i>
                          </a>
                       </div>
                       <div class="video-news-content">
                          <h3>
-                            <a href="#">Apply these 10 secret techniques to improve travel</a>
+                            <a href="{{ route('single.news', $video->slug) }}">{{ $video->title }}</a>
                          </h3>
-                         <span>28 September, 2021</span>
+                         <span>{{ date('d F Y', strtotime($video->created_at)) }}</span>
                       </div>
                    </div>
-                   <div class="video-item">
-                      <div class="video-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/video-news/video-news-2.jpg" alt="image">
-                         </a>
-                         <a href="https://www.youtube.com/watch?v=UG8N5JT4QLc" class="popup-youtube">
-                         <i class='bx bx-play-circle'></i>
-                         </a>
-                      </div>
-                      <div class="video-news-content">
-                         <h3>
-                            <a href="#">The lazy man’s guide to travel you to our moms</a>
-                         </h3>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </div>
-                   <div class="video-item">
-                      <div class="video-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/video-news/video-news-3.jpg" alt="image">
-                         </a>
-                         <a href="https://www.youtube.com/watch?v=UG8N5JT4QLc" class="popup-youtube">
-                         <i class='bx bx-play-circle'></i>
-                         </a>
-                      </div>
-                      <div class="video-news-content">
-                         <h3>
-                            <a href="#">Sony laptops are still part of the sony family</a>
-                         </h3>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </div>
+                   @endforeach
                 </div>
              </div>
              <div class="politics-news">
                 <div class="section-title">
-                   <h2>Politics</h2>
+                    @if($language->id == 1)
+                    <h2>Politics</h2>
+                    @elseif($language->id == 2)
+                    <h2>রাজনীতি</h2>
+                    @endif
                 </div>
+                @if($language->id == 1)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'Politics')->first();      
+                    @endphp
+
                 <div class="row">
-                   <div class="col-lg-6">
-                      <div class="politics-news-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="politics-news-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/politics-news/politics-news-2.jpg" alt="image">
-                                  </a>
-                               </div>
+                    <div class="col-lg-6">
+
+                        @foreach($category->posts as $key => $news)
+                            @if($key >= 1 && $key < 4)
+                                @php
+                                    $featured_info = json_decode($news->featured);
+                                @endphp
+                                <div class="politics-news-post">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-4 col-sm-4">
+                                        <div class="politics-news-image">
+                                            @if($news->post_type == 'Image')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Gallery')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Video')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Audio')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                </a>
+                                            @endif
+                                        </div>
+                                        </div>
+                                        <div class="col-lg-8 col-sm-8">
+                                        <div class="politics-news-content">
+                                            <h3>
+                                                <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a> 
+                                            </h3>
+                                            <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+
+
+                    </div>
+                    @foreach($category->posts as $key => $news)
+                    @if($key < 1)
+                    @php
+                        $featured_info = json_decode($news->featured);
+                    @endphp
+                    <div class="col-lg-6">
+                        <div class="single-politics-news">
+                            <div class="politics-news-image">
+                                @if($news->post_type == 'Image')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Gallery')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Video')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Audio')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                    </a>
+                                @endif
                             </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="politics-news-content">
-                                  <h3>
-                                     <a href="#">Politically, new riots have started inside the country</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
+                            <div class="politics-news-content">
+                                <span>Politics</span>
+                                <h3>
+                                <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                </h3>
+                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
                             </div>
-                         </div>
-                      </div>
-                      <div class="politics-news-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="politics-news-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/politics-news/politics-news-3.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="politics-news-content">
-                                  <h3>
-                                     <a href="#">Public discussion in 5 major issues</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="politics-news-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="politics-news-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/politics-news/politics-news-4.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="politics-news-content">
-                                  <h3>
-                                     <a href="#">Preparations are being made in a new way for the elections</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6">
-                      <div class="single-politics-news">
-                         <div class="politics-news-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/politics-news/politics-news-5.jpg" alt="image">
-                            </a>
-                         </div>
-                         <div class="politics-news-content">
-                            <span>Politics</span>
-                            <h3>
-                               <a href="#">Organizing conference among our selves to make it better financially</a>
-                            </h3>
-                            <p><a href="#">Jonson Steven</a> / 28 September, 2021</p>
-                         </div>
-                      </div>
-                   </div>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
                 </div>
+
+                
+                @elseif($language->id == 2)
+                
+                    @php
+                        $category = App\Models\Category::where('slug', 'রাজনীতি')->first();
+                        // dd($category->posts);      
+                    @endphp
+
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            @foreach($category->posts as $key => $news)
+                                @if($key >= 1 && $key < 4)
+                                    @php
+                                        $featured_info = json_decode($news->featured);
+                                    @endphp
+                                    <div class="politics-news-post">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-4 col-sm-4">
+                                            <div class="politics-news-image">
+                                                @if($news->post_type == 'Image')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Gallery')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Video')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Audio')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                            </div>
+                                            <div class="col-lg-8 col-sm-8">
+                                            <div class="politics-news-content">
+                                                <h3>
+                                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a> 
+                                                </h3>
+                                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+
+
+                        </div>
+                        @foreach($category->posts as $key => $news)
+                        @if($key < 1)
+                        @php
+                            $featured_info = json_decode($news->featured);
+                        @endphp
+                        <div class="col-lg-6">
+                            <div class="single-politics-news">
+                                <div class="politics-news-image">
+                                    @if($news->post_type == 'Image')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Gallery')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Video')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Audio')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                </div>
+                                <div class="politics-news-content">
+                                    <span>রাজনীতি</span>
+                                    <h3>
+                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                    </h3>
+                                    <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+                @endif
              </div>
+
              <div class="business-news">
                 <div class="section-title">
-                   <h2>Business</h2>
+                    @if($language->id == 1)
+                    <h2>Business</h2>
+                    @elseif($language->id == 2)
+                    <h2>ব্যবসা</h2>
+                    @endif
                 </div>
                 <div class="business-news-slides owl-carousel owl-theme">
-                   <div class="single-business-news">
+                  
+                  @if($language->id == 1)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'Business')->first();
+                    @endphp
+
+                    @foreach($category->posts as $news)
+                    @php
+                        $featured_info = json_decode($news->featured);
+                    @endphp
+                    <div class="single-business-news">
                       <div class="business-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/business-news/business-news-3.jpg" alt="image">
-                         </a>
+                        @if($news->post_type == 'Image')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                            </a>
+                        @endif
+                        @if($news->post_type == 'Gallery')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                            </a>
+                        @endif
+                        @if($news->post_type == 'Video')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                            </a>
+                        @endif
+                        @if($news->post_type == 'Audio')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                            </a>
+                        @endif
                       </div>
                       <div class="business-news-content">
                          <span>Business</span>
                          <h3>
-                            <a href="#">We have to make a business plan while maintaining mental heatlh during this epidemic</a>
-                         </h3>
-                         <p><a href="#">Patricia</a> / 28 September, 2021</p>
+                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                        </h3>
+                        <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
                       </div>
                    </div>
-                   <div class="single-business-news">
-                      <div class="business-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/business-news/business-news-4.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="business-news-content">
-                         <span>News</span>
-                         <h3>
-                            <a href="#">Many people are established today by doing ecommerce business during the time of Corona</a>
-                         </h3>
-                         <p><a href="#">Sanford</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
-                   <div class="single-business-news">
-                      <div class="business-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/business-news/business-news-3.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="business-news-content">
-                         <span>Business</span>
-                         <h3>
-                            <a href="#">We have to make a business plan while maintaining mental heatlh during this epidemic</a>
-                         </h3>
-                         <p><a href="#">Patricia</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
-                   <div class="single-business-news">
-                      <div class="business-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/business-news/business-news-4.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="business-news-content">
-                         <span>News</span>
-                         <h3>
-                            <a href="#">Many people are established today by doing ecommerce business during the time of Corona</a>
-                         </h3>
-                         <p><a href="#">Sanford</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
+                   @endforeach
+
+                   @elseif($language->id == 2)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'ব্যবসা')->first();
+                    @endphp
+
+                    @foreach($category->posts as $news)
+                    @php
+                        $featured_info = json_decode($news->featured);
+                    @endphp
+                    <div class="single-business-news">
+                        <div class="business-news-image">
+                        @if($news->post_type == 'Image')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                            </a>
+                        @endif
+                        @if($news->post_type == 'Gallery')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                            </a>
+                        @endif
+                        @if($news->post_type == 'Video')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                            </a>
+                        @endif
+                        @if($news->post_type == 'Audio')
+                            <a href="{{ route('single.news', $news->slug) }}">
+                                <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                            </a>
+                        @endif
+                        </div>
+                        <div class="business-news-content">
+                            <span>ব্যবসা</span>
+                            <h3>
+                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                        </h3>
+                        <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+
+                   @endif
+                   
+
                 </div>
              </div>
              <div class="culture-news">
                 <div class="section-title">
-                   <h2>Culture</h2>
+                    @if($language->id == 1)
+                    <h2>Culture</h2>
+                    @elseif($language->id == 2)
+                    <h2>সংস্কৃতি</h2>
+                    @endif
                 </div>
-                <div class="row">
-                   <div class="col-lg-6">
-                      <div class="culture-news-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="culture-news-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/culture-news/culture-news-2.jpg" alt="image">
-                                  </a>
-                               </div>
+                @if($language->id == 1)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'Culture')->first();      
+                    @endphp
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            @foreach($category->posts as $key => $news)
+                                @if($key >= 1 && $key < 4)
+                                    @php
+                                        $featured_info = json_decode($news->featured);
+                                    @endphp
+                                    <div class="culture-news-post">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-4 col-sm-4">
+                                            <div class="culture-news-image">
+                                                @if($news->post_type == 'Image')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Gallery')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Video')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Audio')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                            </div>
+                                            <div class="col-lg-8 col-sm-8">
+                                            <div class="culture-news-content">
+                                                <h3>
+                                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                                </h3>
+                                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+
+                        </div>
+
+                        @foreach($category->posts as $key => $news)
+                        @if($key < 1)
+                        @php
+                            $featured_info = json_decode($news->featured);
+                        @endphp
+                        <div class="col-lg-6">
+                            <div class="single-culture-news">
+                                <div class="culture-news-image">
+                                    @if($news->post_type == 'Image')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Gallery')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Video')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Audio')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                </div>
+                                <div class="culture-news-content">
+                                    <span>Culture</span>
+                                    <h3>
+                                        <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                    </h3>
+                                    <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                </div>
                             </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="culture-news-content">
-                                  <h3>
-                                     <a href="#">Working in the garden is a tradition for women</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                @elseif($language->id == 2)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'সংস্কৃতি')->first();      
+                    @endphp
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            @foreach($category->posts as $key => $news)
+                                @if($key >= 1 && $key < 4)
+                                    @php
+                                        $featured_info = json_decode($news->featured);
+                                    @endphp
+                                    <div class="culture-news-post">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-4 col-sm-4">
+                                            <div class="culture-news-image">
+                                                @if($news->post_type == 'Image')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Gallery')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Video')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Audio')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                            </div>
+                                            <div class="col-lg-8 col-sm-8">
+                                            <div class="culture-news-content">
+                                                <h3>
+                                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                                </h3>
+                                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+
+                        </div>
+
+                        @foreach($category->posts as $key => $news)
+                        @if($key < 1)
+                        @php
+                            $featured_info = json_decode($news->featured);
+                        @endphp
+                        <div class="col-lg-6">
+                            <div class="single-culture-news">
+                                <div class="culture-news-image">
+                                    @if($news->post_type == 'Image')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Gallery')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Video')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                    @if($news->post_type == 'Audio')
+                                        <a href="{{ route('single.news', $news->slug) }}">
+                                            <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                        </a>
+                                    @endif
+                                </div>
+                                <div class="culture-news-content">
+                                    <span>সংস্কৃতি</span>
+                                    <h3>
+                                        <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                    </h3>
+                                    <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                </div>
                             </div>
-                         </div>
-                      </div>
-                      <div class="culture-news-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="culture-news-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/culture-news/culture-news-3.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="culture-news-content">
-                                  <h3>
-                                     <a href="#">The fashion that captures the lives of women</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="culture-news-post">
-                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4">
-                               <div class="culture-news-image">
-                                  <a href="#">
-                                  <img src="{{ asset('/frontend/') }}/assets/img/culture-news/culture-news-4.jpg" alt="image">
-                                  </a>
-                               </div>
-                            </div>
-                            <div class="col-lg-8 col-sm-8">
-                               <div class="culture-news-content">
-                                  <h3>
-                                     <a href="#">A group of artists performed music in a group way</a>
-                                  </h3>
-                                  <p>28 September, 2021</p>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6">
-                      <div class="single-culture-news">
-                         <div class="culture-news-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/culture-news/culture-news-1.jpg" alt="image">
-                            </a>
-                         </div>
-                         <div class="culture-news-content">
-                            <span>Culture</span>
-                            <h3>
-                               <a href="#">Entertainment activists started again a few months later</a>
-                            </h3>
-                            <p><a href="#">Steven</a> / 28 September, 2021</p>
-                         </div>
-                      </div>
-                   </div>
-                </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                @endif
+
              </div>
              <div class="row">
                 <div class="col-lg-6">
@@ -901,70 +1156,11 @@
                       </div>
                    </div>
                 </section>
-                <section class="widget widget_popular_posts_thumb">
-                   <h3 class="widget-title">Popular posts</h3>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg1" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Match between United States and England at AGD stadium</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg2" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">For the last time, he addressed the people</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg3" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">The coronavairus is finished and the outfit is busy</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg4" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">A fierce battle is going on between the two in the game</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                   <article class="item">
-                      <a href="#" class="thumb">
-                      <span class="fullimage cover bg5" role="img"></span>
-                      </a>
-                      <div class="info">
-                         <h4 class="title usmall"><a href="#">Negotiations on a peace agreement between the two countries</a></h4>
-                         <span>28 September, 2021</span>
-                      </div>
-                   </article>
-                </section>
-                <section class="widget widget_tag_cloud">
-                   <h3 class="widget-title">Tags</h3>
-                   <div class="tagcloud">
-                      <a href="#">News</a>
-                      <a href="#">Business</a>
-                      <a href="#">Health</a>
-                      <a href="#">Politics</a>
-                      <a href="#">Magazine</a>
-                      <a href="#">Sport</a>
-                      <a href="#">Tech</a>
-                      <a href="#">Video</a>
-                      <a href="#">Global</a>
-                      <a href="#">Culture</a>
-                      <a href="#">Fashion</a>
-                   </div>
-                </section>
+                
+                @include('frontend.layouts.popular-post')
+
+                @include('frontend.layouts.tag-list')
+
                 <section class="widget widget_instagram">
                    <h3 class="widget-title">Instagram</h3>
                    <ul>

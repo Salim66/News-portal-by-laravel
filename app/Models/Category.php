@@ -12,6 +12,12 @@ class Category extends Model
     protected $guarded = [];
 
 
+    // get child category (Backend Issue)
+    public function categorie(){
+        return $this->belongsTo('App\Models\Category', 'parent_id');
+    }
+
+
     // get child category
     public function categories(){
         return $this->hasMany('App\Models\Category', 'parent_id');
