@@ -29,8 +29,8 @@
                       </a>
                    </li> --}}
                    @php
-                        $langauge = App\Models\Language::where('status', true)->first();
-                        $categor = App\Models\Category::withCount('categories')->with('languages')->where('language_id', $langauge->id)->where('parent_id', null)->where('status', true)->take(7)->get();
+                        $language = App\Models\Language::where('status', true)->first();
+                        $categor = App\Models\Category::withCount('categories')->with('languages')->where('language_id', $language->id)->where('parent_id', null)->where('status', true)->take(7)->get();
                         // dd($categor);
                    @endphp
 
@@ -94,7 +94,11 @@
                 <div class="others-options d-flex align-items-center">
                    <div class="option-item">
                       <form class="search-box">
+                        @if($language->id == 1)
                          <input type="text" class="form-control" placeholder="Search for..">
+                        @elseif($language->id == 2)
+                         <input type="text" class="form-control" placeholder="যা খুঁজতে চান..">
+                        @endif
                          <button type="submit"><i class='bx bx-search'></i></button>
                       </form>
                    </div>
@@ -118,7 +122,11 @@
                 <div class="others-options d-flex align-items-center">
                    <div class="option-item">
                       <form class="search-box">
-                         <input type="text" class="form-control" placeholder="Search for..">
+                         @if($language->id == 1)
+                          <input type="text" class="form-control" placeholder="Search for..">
+                         @elseif($language->id == 2)
+                          <input type="text" class="form-control" placeholder="যা খুঁজতে চান..">
+                         @endif
                          <button type="submit"><i class='bx bx-search'></i></button>
                       </form>
                    </div>

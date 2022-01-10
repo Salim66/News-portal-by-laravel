@@ -1,95 +1,92 @@
+@php
+    $language = App\Models\Language::where('status', true)->first();
+@endphp
 <section class="footer-area pt-100 pb-70">
     <div class="container">
        <div class="row">
+        @php
+            $langauge = App\Models\Language::where('status', true)->first();
+            $logo = App\Models\Logo::where('language_id', $langauge->id)->where('status', true)->first();
+            $footer = App\Models\Footer::where('language_id', $language->id)->where('status', true)->first();
+            // dd($categor);
+        @endphp
           <div class="col-lg-3 col-md-6">
              <div class="single-footer-widget">
                 <a href="#">
-                <img src="{{ asset('/frontend/') }}/assets/img/logo-3.png" alt="image">
+                <img src="{{ URL::to('/') }}/media/logos/{{ $logo->logo }}" alt="image">
                 </a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>{{ $footer->footer_text }}</p>
                 <ul class="social">
+                @php
+                    $language = App\Models\Language::where('status', true)->first();
+                    $socials = App\Models\SocialLink::where('language_id', $language->id)->where('status', true)->get();
+                    
+                @endphp
+
+                @foreach($socials as $social)
                    <li>
-                      <a href="#" class="facebook" target="_blank">
-                      <i class='bx bxl-facebook'></i>
+                      <a title="{{ $social->name }}" href="{{ $social->link }}" class="facebook" target="_blank">
+                      <i class='{{ $social->icon }}'></i>
                       </a>
                    </li>
-                   <li>
-                      <a href="#" class="twitter" target="_blank">
-                      <i class='bx bxl-instagram'></i>
-                      </a>
-                   </li>
-                   <li>
-                      <a href="#" class="pinterest" target="_blank">
-                      <i class='bx bxl-linkedin'></i>
-                      </a>
-                   </li>
-                   <li>
-                      <a href="#" class="linkedin" target="_blank">
-                      <i class='bx bxl-twitter'></i>
-                      </a>
-                   </li>
-                   <li>
-                      <a href="#" class="linkedin" target="_blank">
-                      <i class='bx bxl-youtube'></i>
-                      </a>
-                   </li>
+                @endforeach
+           
                 </ul>
              </div>
           </div>
           <div class="col-lg-3 col-md-6">
              <div class="single-footer-widget">
-                <h2>Recent post</h2>
+                 @if($language->id == 1)
+                 <h2>Recent post</h2>
+                 @elseif($language->id == 2)
+                 <h2>সাম্প্রতিক পোস্ট</h2>
+                 @endif
+
+                 @php
+                    $posts = App\Models\Post::where('language_id', $language->id)->where('status', true)->where('trash', false)->latest()->get();
+                 @endphp
+                 @foreach($posts as $key => $news)
+                 @php
+                    $featured_info = json_decode($news->featured);
+                 @endphp
+                 @if($key < 3)
                 <div class="post-content">
                    <div class="row align-items-center">
                       <div class="col-md-4">
                          <div class="post-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/recent-post/recent-post-1.jpg" alt="image">
-                            </a>
+                            @if($news->post_type == 'Image')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                </a>
+                            @endif
+                            @if($news->post_type == 'Gallery')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                </a>
+                            @endif
+                            @if($news->post_type == 'Video')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <iframe class="" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                </a>
+                            @endif
+                            @if($news->post_type == 'Audio')
+                                <a href="{{ route('single.news', $news->slug) }}">
+                                    <iframe class="" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                </a>
+                            @endif
                          </div>
                       </div>
                       <div class="col-md-8">
-                         <h4>
-                            <a href="#">The match of the volleyball full of excitement</a>
-                         </h4>
-                         <span>28 Sep 2021</span>
+                        <h4>
+                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                        </h4>
+                        <span>{{ date('d M Y', strtotime($news->created_at)) }}</span>
                       </div>
                    </div>
                 </div>
-                <div class="post-content">
-                   <div class="row align-items-center">
-                      <div class="col-md-4">
-                         <div class="post-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/recent-post/recent-post-2.jpg" alt="image">
-                            </a>
-                         </div>
-                      </div>
-                      <div class="col-md-8">
-                         <h4>
-                            <a href="#">The match of the volleyball full of excitement</a>
-                         </h4>
-                         <span>28 Sep 2021</span>
-                      </div>
-                   </div>
-                </div>
-                <div class="post-content">
-                   <div class="row align-items-center">
-                      <div class="col-md-4">
-                         <div class="post-image">
-                            <a href="#">
-                            <img src="{{ asset('/frontend/') }}/assets/img/recent-post/recent-post-3.jpg" alt="image">
-                            </a>
-                         </div>
-                      </div>
-                      <div class="col-md-8">
-                         <h4>
-                            <a href="#">The match of the volleyball full of excitement</a>
-                         </h4>
-                         <span>28 Sep 2021</span>
-                      </div>
-                   </div>
-                </div>
+                @endif
+                @endforeach
+               
              </div>
           </div>
           <div class="col-lg-3 col-md-6">
@@ -141,13 +138,23 @@
        </div>
     </div>
  </section>
+ @php
+    $footer = App\Models\Footer::where('language_id', $language->id)->first();
+@endphp
  <div class="copyright-area">
     <div class="container">
        <div class="copyright-area-content">
+           @if($language->id == 1)
           <p>
-             Copyright © 2022 Chandlee News. All Rights Reserved by
-             <a href="https://www.techdynobd.com/" target="_blank">Techdyno BD <span style="font-size: 20px">&hearts;</span></a>
+             {{ $footer->copyright_text }}
+             <a href="https://www.techdynobd.com/" target="_blank">Techdyno BD <span>&hearts;</span></a>
           </p>
+           @elseif($language->id == 2)
+          <p>
+            {{ $footer->copyright_text }}
+             <a href="https://www.techdynobd.com/" target="_blank">টেকডাইনো বিডি <span>&hearts;</span></a>
+          </p>
+          @endif
        </div>
     </div>
  </div>

@@ -811,316 +811,553 @@
              <div class="row">
                 <div class="col-lg-6">
                    <div class="section-title">
-                      <h2>Sports</h2>
+                        @if($language->id == 1)
+                        <h2>Sports</h2>
+                        @elseif($language->id == 2)
+                        <h2>খেলাধুলা</h2>
+                        @endif
                    </div>
-                   <div class="sports-slider owl-carousel owl-theme">
-                      <div class="sports-item">
-                         <div class="single-sports-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="sports-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/sports-news/sports-news-1.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="sports-news-content">
-                                     <h3>
-                                        <a href="#">Start a new men’s road World Championships</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
+
+                   @if($language->id == 1)
+
+                   @php
+                       $category = App\Models\Category::where('slug', 'Sports')->first();      
+                   @endphp
+
+                    <div class="sports-slider owl-carousel owl-theme">
+                        <div class="sports-item">
+
+                            @foreach($category->posts as $key => $news)
+                            {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                            @if($key < 3)
+                            <div class="single-sports-news">
+                                <div class="row align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="sports-news-image">
+                                        @if($news->post_type == 'Image')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Gallery')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Video')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Audio')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="sports-news-content">
+                                        <h3>
+                                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                        </h3>
+                                        <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
-                         </div>
-                         <div class="single-sports-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="sports-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/sports-news/sports-news-2.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="sports-news-content">
-                                     <h3>
-                                        <a href="#">He look the first wicket with the first ball in this IPL</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
+                            @endif
+                            @endforeach                           
+
+
+                        </div>
+                        <div class="sports-item">
+
+                            @foreach($category->posts as $key => $news)
+                            {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                            @if($key >= 3 && $key < 6)
+                            <div class="single-sports-news">
+                                <div class="row align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="sports-news-image">
+                                        @if($news->post_type == 'Image')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Gallery')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Video')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Audio')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="sports-news-content">
+                                        <h3>
+                                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                        </h3>
+                                        <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
-                         </div>
-                         <div class="single-sports-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="sports-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/sports-news/sports-news-3.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="sports-news-content">
-                                     <h3>
-                                        <a href="#">The last time of the match is goning on</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
+                            @endif
+                            @endforeach
+                            
+
+                        </div>
+                    </div>
+                    
+                    @elseif($language->id == 2)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'খেলাধুলা')->first();      
+                    @endphp
+
+                    <div class="sports-slider owl-carousel owl-theme">
+                        <div class="sports-item">
+
+                            @foreach($category->posts as $key => $news)
+                            {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                            @if($key < 3)
+                            <div class="single-sports-news">
+                                <div class="row align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="sports-news-image">
+                                        @if($news->post_type == 'Image')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Gallery')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Video')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Audio')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="sports-news-content">
+                                        <h3>
+                                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                        </h3>
+                                        <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
-                         </div>
-                      </div>
-                      <div class="sports-item">
-                         <div class="single-sports-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="sports-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/sports-news/sports-news-1.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="sports-news-content">
-                                     <h3>
-                                        <a href="#">Start a new men’s road World Championships</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
+                            @endif
+                            @endforeach                           
+
+
+                        </div>
+                        <div class="sports-item">
+
+                            @foreach($category->posts as $key => $news)
+                            {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                            @if($key >= 3 && $key < 6)
+                            <div class="single-sports-news">
+                                <div class="row align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="sports-news-image">
+                                        @if($news->post_type == 'Image')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Gallery')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Video')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                        @if($news->post_type == 'Audio')
+                                            <a href="{{ route('single.news', $news->slug) }}">
+                                                <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="sports-news-content">
+                                        <h3>
+                                            <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                        </h3>
+                                        <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
-                         </div>
-                         <div class="single-sports-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="sports-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/sports-news/sports-news-2.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="sports-news-content">
-                                     <h3>
-                                        <a href="#">He look the first wicket with the first ball in this IPL</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="single-sports-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="sports-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/sports-news/sports-news-3.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="sports-news-content">
-                                     <h3>
-                                        <a href="#">The last time of the match is goning on</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
+                            @endif
+                            @endforeach
+                            
+
+                        </div>
+                    </div>
+
+                    @endif
+
                 </div>
+
+
                 <div class="col-lg-6">
                    <div class="section-title">
-                      <h2>Tech</h2>
+                        @if($language->id == 1)
+                        <h2>Tech</h2>
+                        @elseif($language->id == 2)
+                        <h2>প্রযুক্তি</h2>
+                        @endif
                    </div>
+
+                   @if($language->id == 1)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'Tech')->first(); 
+                        // dd($category);
+                    @endphp
+                   
                    <div class="tech-slider owl-carousel owl-theme">
                       <div class="tech-item">
-                         <div class="single-tech-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="tech-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/tech-news/tech-news-1.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="tech-news-content">
-                                     <h3>
-                                        <a href="#">5 more phones have come to the market with features.</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="single-tech-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="tech-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/tech-news/tech-news-2.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="tech-news-content">
-                                     <h3>
-                                        <a href="#">Like humans, the new robot has a lot of memory power</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="single-tech-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="tech-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/tech-news/tech-news-3.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="tech-news-content">
-                                     <h3>
-                                        <a href="#">All new gadgets are being made in technology</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
+                        @foreach($category->posts as $key => $news)
+                        {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                            @if($key < 3)
+                                <div class="single-tech-news">
+                                    <div class="row align-items-center">
+                                    <div class="col-lg-4">
+                                        <div class="tech-news-image">
+                                            @if($news->post_type == 'Image')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Gallery')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Video')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Audio')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="tech-news-content">
+                                            <h3>
+                                                <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                            </h3>
+                                            <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                         
                       </div>
                       <div class="tech-item">
-                         <div class="single-tech-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="tech-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/tech-news/tech-news-1.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="tech-news-content">
-                                     <h3>
-                                        <a href="#">5 more phones have come to the market with features.</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="single-tech-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="tech-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/tech-news/tech-news-2.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="tech-news-content">
-                                     <h3>
-                                        <a href="#">Like humans, the new robot has a lot of memory power</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="single-tech-news">
-                            <div class="row align-items-center">
-                               <div class="col-lg-4">
-                                  <div class="tech-news-image">
-                                     <a href="#">
-                                     <img src="{{ asset('/frontend/') }}/assets/img/tech-news/tech-news-3.jpg" alt="image">
-                                     </a>
-                                  </div>
-                               </div>
-                               <div class="col-lg-8">
-                                  <div class="tech-news-content">
-                                     <h3>
-                                        <a href="#">All new gadgets are being made in technology</a>
-                                     </h3>
-                                     <p>28 September, 2021</p>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
+                        @foreach($category->posts as $key => $news)
+                        {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                            @if($key >= 3 && $key < 6)
+                                <div class="single-tech-news">
+                                    <div class="row align-items-center">
+                                    <div class="col-lg-4">
+                                        <div class="tech-news-image">
+                                            @if($news->post_type == 'Image')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Gallery')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Video')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                </a>
+                                            @endif
+                                            @if($news->post_type == 'Audio')
+                                                <a href="{{ route('single.news', $news->slug) }}">
+                                                    <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="tech-news-content">
+                                            <h3>
+                                                <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                            </h3>
+                                            <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
                       </div>
                    </div>
+
+                   @elseif($language->id == 2)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'প্রযুক্তি')->first(); 
+                        // dd($category);
+                    @endphp
+                    
+                    <div class="tech-slider owl-carousel owl-theme">
+                        <div class="tech-item">
+                            @foreach($category->posts as $key => $news)
+                            {{-- @dd($category->posts) --}}
+                                @php
+                                    $featured_info = json_decode($news->featured);
+                                @endphp
+                                @if($key < 3)
+                                    <div class="single-tech-news">
+                                        <div class="row align-items-center">
+                                        <div class="col-lg-4">
+                                            <div class="tech-news-image">
+                                                @if($news->post_type == 'Image')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Gallery')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Video')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Audio')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="tech-news-content">
+                                                <h3>
+                                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                                </h3>
+                                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                            
+                        </div>
+                        <div class="tech-item">
+                            @foreach($category->posts as $key => $news)
+                            {{-- @dd($category->posts) --}}
+                                @php
+                                    $featured_info = json_decode($news->featured);
+                                @endphp
+                                @if($key >= 3 && $key < 6)
+                                    <div class="single-tech-news">
+                                        <div class="row align-items-center">
+                                        <div class="col-lg-4">
+                                            <div class="tech-news-image">
+                                                @if($news->post_type == 'Image')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Gallery')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Video')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="top-video__news" src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                                @if($news->post_type == 'Audio')
+                                                    <a href="{{ route('single.news', $news->slug) }}">
+                                                        <iframe class="top-video__news" src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="tech-news-content">
+                                                <h3>
+                                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                                </h3>
+                                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+
+                   @endif
+
                 </div>
              </div>
              <div class="health-news">
                 <div class="section-title">
-                   <h2>Health</h2>
+                    @if($language->id == 1)
+                    <h2>Health</h2>
+                    @elseif($language->id == 2)
+                    <h2>স্বাস্থ্য</h2>
+                    @endif
                 </div>
+
                 <div class="health-news-slides owl-carousel owl-theme">
-                   <div class="single-health-news">
-                      <div class="health-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/health-news/health-news-3.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="health-news-content">
-                         <span>Health</span>
-                         <h3>
-                            <a href="#">At present, diseases have become the main obstacle for children to get out healthy</a>
-                         </h3>
-                         <p><a href="#">Tikelo</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
-                   <div class="single-health-news">
-                      <div class="health-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/health-news/health-news-4.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="health-news-content">
-                         <span>Fitness</span>
-                         <h3>
-                            <a href="#">Morning yoga is very important for maintaining good physical fitness</a>
-                         </h3>
-                         <p><a href="#">Patricia</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
-                   <div class="single-health-news">
-                      <div class="health-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/health-news/health-news-3.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="health-news-content">
-                         <span>Health</span>
-                         <h3>
-                            <a href="#">At present, diseases have become the main obstacle for children to get out healthy</a>
-                         </h3>
-                         <p><a href="#">Tikelo</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
-                   <div class="single-health-news">
-                      <div class="health-news-image">
-                         <a href="#">
-                         <img src="{{ asset('/frontend/') }}/assets/img/health-news/health-news-4.jpg" alt="image">
-                         </a>
-                      </div>
-                      <div class="health-news-content">
-                         <span>Fitness</span>
-                         <h3>
-                            <a href="#">Morning yoga is very important for maintaining good physical fitness</a>
-                         </h3>
-                         <p><a href="#">Patricia</a> / 28 September, 2021</p>
-                      </div>
-                   </div>
+                   @if($language->id == 1)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'Health')->first(); 
+                        // dd($category);
+                    @endphp
+
+                    @foreach($category->posts as $key => $news)
+                        {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                        <div class="single-health-news">
+                            <div class="health-news-image">
+                                @if($news->post_type == 'Image')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Gallery')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Video')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <iframe src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Audio')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <iframe src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="health-news-content">
+                                <span>Health</span>
+                                <h3>
+                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                </h3>
+                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+
+                   @elseif($language->id == 2)
+
+                    @php
+                        $category = App\Models\Category::where('slug', 'স্বাস্থ্য')->first(); 
+                        // dd($category);
+                    @endphp
+
+                    @foreach($category->posts as $key => $news)
+                        {{-- @dd($category->posts) --}}
+                            @php
+                                $featured_info = json_decode($news->featured);
+                            @endphp
+                        <div class="single-health-news">
+                            <div class="health-news-image">
+                                @if($news->post_type == 'Image')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_image }}" alt="image">
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Gallery')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <img src="{{ URL::to('/') }}/media/posts/{{ $featured_info->post_gallery[0] }}" alt="image">
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Video')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <iframe src="{{ $featured_info->post_video }}" frameborder="0"></iframe>
+                                    </a>
+                                @endif
+                                @if($news->post_type == 'Audio')
+                                    <a href="{{ route('single.news', $news->slug) }}">
+                                        <iframe src="{{ $featured_info->post_audio }}" frameborder="0"></iframe>
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="health-news-content">
+                                <span>স্বাস্থ্য</span>
+                                <h3>
+                                    <a href="{{ route('single.news', $news->slug) }}">{{ $news->title }}</a>
+                                </h3>
+                                <p>{{ date('d F Y', strtotime($video->created_at)) }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+
+                   @endif
+                   
                 </div>
              </div>
           </div>

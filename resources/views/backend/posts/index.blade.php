@@ -161,7 +161,7 @@
                                 </div>
                             </div>
                             @php
-                                $languages = App\Models\Language::where('status', true)->where('trash', false)->get();
+                                $languages = App\Models\Language::where('trash', false)->get();
                                 // dd($languages);
                             @endphp
                             <div class="col-md-6">
@@ -290,7 +290,7 @@
                         </div>
                     </div>
                     @php
-                        $languages = App\Models\Language::where('status', true)->where('trash', false)->get();
+                        $languages = App\Models\Language::where('trash', false)->get();
                     @endphp
                     <div class="col-md-6">
                         <div class="form-group">

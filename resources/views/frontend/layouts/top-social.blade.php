@@ -9,7 +9,7 @@
       @foreach($socials as $social)
           @if($social->languages->status == true)
               <li>
-                  <a title="{{ $social->name }}" href="{{ $social->link }}" class="facebook" target="_blank">
+                  <a title="{{ $social->name }}" href="{{ $social->link }}" class="facebook social-top" target="_blank">
                   <i class='{{ $social->icon }}'></i>
                   </a>
               </li>

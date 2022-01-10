@@ -29,7 +29,7 @@ class Category extends Model
 
     // get category wise post
     public function posts(){
-        return $this->belongsToMany('App\Models\Post');
+        return $this->belongsToMany('App\Models\Post')->latest();
     }
 
 }
